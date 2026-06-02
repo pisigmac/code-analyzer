@@ -1,0 +1,935 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Analyzer Report</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .header h1 { font-size: 2em; margin-bottom: 10px; }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 { font-size: 0.9em; color: #666; margin-bottom: 10px; }
+        .stat-card .number { font-size: 2em; font-weight: bold; }
+        .severity-critical { color: #dc3545; }
+        .severity-high { color: #fd7e14; }
+        .severity-medium { color: #ffc107; }
+        .severity-low { color: #17a2b8; }
+        .severity-info { color: #28a745; }
+        .issues-table {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            border-bottom: 2px solid #dee2e6;
+        }
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #dee2e6;
+        }
+        tr:hover { background: #f8f9fa; }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+        .badge-critical { background: #f8d7da; color: #721c24; }
+        .badge-high { background: #fff3cd; color: #856404; }
+        .badge-medium { background: #d1ecf1; color: #0c5460; }
+        .badge-low { background: #d4edda; color: #155724; }
+        .badge-info { background: #e2e3e5; color: #383d41; }
+        .fix-box {
+            background: #f8f9fa;
+            border-left: 4px solid #28a745;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 4px;
+        }
+        .fix-box code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+        }
+        .location {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85em;
+            word-break: break-all;
+        }
+        .location small { color: #888; }
+            text-align: center;
+            padding: 60px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .no-issues h2 { color: #28a745; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Code Analyzer Report</h1>
+            <p>Analysis Results</p>
+        </div>
+
+        
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Issues</h3>
+                <div class="number">38</div>
+            </div>
+            <div class="stat-card">
+                <h3>Fixable Issues</h3>
+                <div class="number">30</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>LOW</h3>
+                <div class="number severity-low">9</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>CRITICAL</h3>
+                <div class="number severity-critical">7</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>HIGH</h3>
+                <div class="number severity-high">11</div>
+            </div>
+            
+            <div class="stat-card">
+                <h3>MEDIUM</h3>
+                <div class="number severity-medium">11</div>
+            </div>
+            
+        </div>
+
+        <div class="issues-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Severity</th>
+                        <th>Rule</th>
+                        <th>Location</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-low">
+                                LOW
+                            </span>
+                        </td>
+                        <td>detect_open_without_encoding</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>36:9</small></td>
+                        <td>
+                            open() without encoding argument - may cause platform-specific bugs
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Add encoding='utf-8' argument
+                                
+                                <br>
+                                <code>open(..., encoding="utf-8")</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-critical">
+                                CRITICAL
+                            </span>
+                        </td>
+                        <td>detect_hardcoded_secrets</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>10:0</small></td>
+                        <td>
+                            Hardcoded api_key detected - use environment variables
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use environment variable for api_key
+                                
+                                <br>
+                                <code>import os
+api_key = os.environ.get('API_KEY')</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_debug_mode</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>13:0</small></td>
+                        <td>
+                            Debug mode enabled - disable in production
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Set DEBUG = False in production
+                                
+                                <span style="color: #28a745;">[auto-fixable]</span>
+                                
+                                <br>
+                                <code>DEBUG = False</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-critical">
+                                CRITICAL
+                            </span>
+                        </td>
+                        <td>detect_sql_injection</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>17:12</small></td>
+                        <td>
+                            Potential SQL injection vulnerability - use parameterized queries
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use parameterized queries
+                                
+                                <br>
+                                <code># Use parameterized query to prevent SQL injection</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-critical">
+                                CRITICAL
+                            </span>
+                        </td>
+                        <td>detect_eval_usage</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>23:11</small></td>
+                        <td>
+                            Dangerous eval() usage - potential code injection
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_pickle_usage</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>27:11</small></td>
+                        <td>
+                            Unsafe pickle usage - potential arbitrary code execution
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_weak_hashing</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>32:11</small></td>
+                        <td>
+                            Weak hashing algorithm 'md5' detected - use sha256 or better
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use hashlib.sha256() instead
+                                
+                                <br>
+                                <code>hashlib.sha256(data).hexdigest()</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_temp_file_race</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>36:9</small></td>
+                        <td>
+                            Insecure temporary file creation - use tempfile.mkstemp()
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use tempfile.mkstemp() for secure temp files
+                                
+                                <br>
+                                <code>import tempfile
+fd, path = tempfile.mkstemp()</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_subprocess_shell</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>41:4</small></td>
+                        <td>
+                            subprocess called with shell=True - potential shell injection
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Pass command as a list and remove shell=True
+                                
+                                <br>
+                                <code>subprocess.run(['cmd', 'arg1'], shell=False)</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_assert_security</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>45:4</small></td>
+                        <td>
+                            assert used for security check - stripped with python -O flag
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Replace assert with an explicit if/raise check
+                                
+                                <br>
+                                <code>if not condition:
+    raise PermissionError('Access denied')</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_random_for_secrets</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>49:11</small></td>
+                        <td>
+                            random module used for security token - use secrets module instead
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use secrets.token_hex() or secrets.choice() instead
+                                
+                                <br>
+                                <code>import secrets
+secrets.token_hex(32)</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_http_url</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>52:11</small></td>
+                        <td>
+                            Hardcoded http:// URL - use https:// for secure transport
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Replace http:// with https://
+                                
+                                <br>
+                                <code>https://example.com/api</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_broad_except</td>
+                        <td class="location">tests/fixtures/insecure_code.py<br><small>58:4</small></td>
+                        <td>
+                            Broad except clause swallows all errors - may hide security failures
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_list_comprehension_opportunities</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>6:4</small></td>
+                        <td>
+                            Loop can be replaced with list comprehension for better performance
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Replace loop with list comprehension
+                                
+                                <span style="color: #28a745;">[auto-fixable]</span>
+                                
+                                <br>
+                                <code>[i * 2 for i in range(100)]</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_inefficient_string_concatenation</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>14:8</small></td>
+                        <td>
+                            Inefficient string concatenation in loop - use join() instead
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use str.join() for efficient string concatenation
+                                
+                                <br>
+                                <code># Use '\n'.join(items) or similar pattern</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-low">
+                                LOW
+                            </span>
+                        </td>
+                        <td>detect_unnecessary_list_creation</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>19:11</small></td>
+                        <td>
+                            Unnecessary list() call - use literal [] instead
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Replace list() with []
+                                
+                                <span style="color: #28a745;">[auto-fixable]</span>
+                                
+                                <br>
+                                <code>[]</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-low">
+                                LOW
+                            </span>
+                        </td>
+                        <td>detect_slow_imports</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>24:4</small></td>
+                        <td>
+                            Import inside function - move to module level
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Move import to module level
+                                
+                                <br>
+                                <code>import json</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_dict_lookup_in_loop</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>30:4</small></td>
+                        <td>
+                            Repeated dict lookup 'data' in loop (3 times) - cache the value
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Cache dict lookup: cached_value = data[key]
+                                
+                                <br>
+                                <code># Cache this lookup before the loop
+cached_data = data[key]</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-low">
+                                LOW
+                            </span>
+                        </td>
+                        <td>detect_range_len</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>37:4</small></td>
+                        <td>
+                            range(len(x)) used in loop - use enumerate() or iterate directly
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use enumerate() or iterate directly
+                                
+                                <br>
+                                <code>for i, item in enumerate(items):</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_membership_in_list</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>42:11</small></td>
+                        <td>
+                            Membership test against list/tuple literal - use a set for O(1) lookup
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use a set literal for O(1) membership test
+                                
+                                <span style="color: #28a745;">[auto-fixable]</span>
+                                
+                                <br>
+                                <code>{1, 2, 3, 4, 5}</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-low">
+                                LOW
+                            </span>
+                        </td>
+                        <td>detect_dict_keys_iteration</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>46:4</small></td>
+                        <td>
+                            Iterating over dict.keys() - iterate over dict directly
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Iterate over d directly
+                                
+                                <span style="color: #28a745;">[auto-fixable]</span>
+                                
+                                <br>
+                                <code>for k in d:</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_mutable_default_argument</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>50:26</small></td>
+                        <td>
+                            Mutable default argument - use None and assign inside function
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use None as default and assign inside function
+                                
+                                <br>
+                                <code>def f(x=None):
+    if x is None:
+        x = []  # or {} or set()</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-low">
+                                LOW
+                            </span>
+                        </td>
+                        <td>detect_sorted_for_minmax</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>56:11</small></td>
+                        <td>
+                            sorted() used only for min/max - use min() or max() directly
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use min(numbers) instead
+                                
+                                <span style="color: #28a745;">[auto-fixable]</span>
+                                
+                                <br>
+                                <code>min(numbers)</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_open_without_with</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>60:8</small></td>
+                        <td>
+                            open() without 'with' statement - file may not be closed
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use 'with open(...) as f:' to ensure file is closed
+                                
+                                <br>
+                                <code>with open(...) as f:
+    ...</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-low">
+                                LOW
+                            </span>
+                        </td>
+                        <td>detect_open_without_encoding</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>60:8</small></td>
+                        <td>
+                            open() without encoding argument - may cause platform-specific bugs
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Add encoding='utf-8' argument
+                                
+                                <br>
+                                <code>open(..., encoding="utf-8")</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-low">
+                                LOW
+                            </span>
+                        </td>
+                        <td>detect_open_without_encoding</td>
+                        <td class="location">tests/fixtures/slow_code.py<br><small>67:9</small></td>
+                        <td>
+                            open() without encoding argument - may cause platform-specific bugs
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Add encoding='utf-8' argument
+                                
+                                <br>
+                                <code>open(..., encoding="utf-8")</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-critical">
+                                CRITICAL
+                            </span>
+                        </td>
+                        <td>detect_hardcoded_secrets</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>7:0</small></td>
+                        <td>
+                            Hardcoded api_key detected - use environment variables
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use environment variable for api_key
+                                
+                                <br>
+                                <code>import os
+api_key = os.environ.get('API_KEY')</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-critical">
+                                CRITICAL
+                            </span>
+                        </td>
+                        <td>detect_ai_hardcoded_key</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>7:0</small></td>
+                        <td>
+                            Hardcoded OPENAI_API_KEY detected - use environment variables
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Use environment variable for OPENAI_API_KEY
+                                
+                                <br>
+                                <code>import os
+openai_api_key = os.environ.get('OPENAI_API_KEY')</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_torch_load_unsafe</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>11:11</small></td>
+                        <td>
+                            torch.load() without weights_only=True - allows arbitrary code execution via pickle
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Add weights_only=True
+                                
+                                <br>
+                                <code>torch.load(path, weights_only=True)</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_joblib_load_unsafe</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>15:11</small></td>
+                        <td>
+                            joblib.load() on potentially untrusted path - arbitrary code execution risk
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-critical">
+                                CRITICAL
+                            </span>
+                        </td>
+                        <td>detect_prompt_injection</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>19:15</small></td>
+                        <td>
+                            User input concatenated directly into LLM prompt - potential prompt injection
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_api_call_no_timeout</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>19:15</small></td>
+                        <td>
+                            LLM API call without timeout or max_tokens - may hang or incur large cost
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Add max_tokens and timeout
+                                
+                                <br>
+                                <code>...(max_tokens=512, timeout=30)</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_pii_logging</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>24:4</small></td>
+                        <td>
+                            Model input/output logged - may expose PII in logs
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-high">
+                                HIGH
+                            </span>
+                        </td>
+                        <td>detect_api_call_in_loop</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>29:8</small></td>
+                        <td>
+                            LLM API call inside loop without visible limit - unbounded cost risk
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_api_call_no_timeout</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>29:8</small></td>
+                        <td>
+                            LLM API call without timeout or max_tokens - may hang or incur large cost
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Add max_tokens and timeout
+                                
+                                <br>
+                                <code>...(max_tokens=512, timeout=30)</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-critical">
+                                CRITICAL
+                            </span>
+                        </td>
+                        <td>detect_prompt_injection</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>33:11</small></td>
+                        <td>
+                            User input concatenated directly into LLM prompt - potential prompt injection
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-medium">
+                                MEDIUM
+                            </span>
+                        </td>
+                        <td>detect_api_call_no_timeout</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>33:11</small></td>
+                        <td>
+                            LLM API call without timeout or max_tokens - may hang or incur large cost
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Add max_tokens and timeout
+                                
+                                <br>
+                                <code>...(max_tokens=512, timeout=30)</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>
+                            <span class="badge badge-low">
+                                LOW
+                            </span>
+                        </td>
+                        <td>detect_missing_seed</td>
+                        <td class="location">tests/fixtures/ai_issues.py<br><small>1:1</small></td>
+                        <td>
+                            No random seed set - results are non-reproducible
+                            
+                            <div class="fix-box">
+                                <strong>💡 Fix:</strong> Set a random seed for reproducibility
+                                
+                                <br>
+                                <code>import random, numpy as np
+random.seed(42)
+np.random.seed(42)
+# torch.manual_seed(42)  # if using Py...</code>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+</body>
+</html>

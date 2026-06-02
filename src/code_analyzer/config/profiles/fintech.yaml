@@ -1,0 +1,20 @@
+name: fintech
+description: Enhanced security focus for financial technology applications
+severity_overrides:
+  detect_hardcoded_secrets: critical
+  detect_sql_injection: critical
+  detect_weak_crypto: critical
+  detect_weak_hashing: high
+  detect_debug_mode: high
+  detect_eval_usage: high
+  detect_pickle_usage: high
+  detect_yaml_load: high
+rule_overrides:
+  detect_hardcoded_secrets: true
+  detect_sql_injection: true
+  detect_weak_crypto: true
+  detect_weak_hashing: true
+  detect_debug_mode: true
+  detect_eval_usage: true
+  detect_pickle_usage: true
+  detect_yaml_load: true

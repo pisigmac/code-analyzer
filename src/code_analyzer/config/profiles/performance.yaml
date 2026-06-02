@@ -1,0 +1,18 @@
+name: performance
+description: Aggressive performance optimization focus
+severity_overrides:
+  detect_list_comprehension_opportunities: high
+  detect_inefficient_string_concatenation: high
+  detect_generator_opportunities: medium
+  detect_dict_lookup_in_loop: high
+  detect_repeated_attribute_lookup: medium
+  detect_unnecessary_list_creation: medium
+  detect_slow_imports: low
+rule_overrides:
+  detect_list_comprehension_opportunities: true
+  detect_inefficient_string_concatenation: true
+  detect_generator_opportunities: true
+  detect_dict_lookup_in_loop: true
+  detect_repeated_attribute_lookup: true
+  detect_unnecessary_list_creation: true
+  detect_slow_imports: true

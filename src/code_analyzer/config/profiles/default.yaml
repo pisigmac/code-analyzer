@@ -1,0 +1,4 @@
+name: default
+description: Default balanced profile for general Python projects
+severity_overrides: {}
+rule_overrides: {}
